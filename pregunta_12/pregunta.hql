@@ -33,3 +33,27 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
+CREATE TABLE datos as
+SELECT letras, clave, valor
+FROM (SELECT letras, c3 FROM t0 LATERAL VIEW explode (c2) conj_letras as letras) data1 
+LATERAL VIEW explode (c3) data1;
+
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t'
+COLLECTION ITEMS TERMINATED BY ','
+MAP KEYS TERMINATED BY '#'
+LINES TERMINATED BY '\n'
+SELECT letras, clave, COUNT(1) FROM datos GROUP BY letras, clave;
+
+
+CREATE TABLE claves AS 
+SELECT clave
+FROM t0
+LATERAL VIEW explode (c3) conjunto_letras as clave;
+
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ','
+SELECT clave, COUNT(1) cantidad FROM claves GROUP BY clave ORDER BY clave;
