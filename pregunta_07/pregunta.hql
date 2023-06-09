@@ -47,7 +47,9 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
 */
 
 DROP TABLE IF EXIST letras;
-CREATE TABLE letras AS SELECT c2, concat_ws(':',collect_set(cast(c1 as STRING))) AS numeros FROM tbl0 GROUP BY c2;
+CREATE TABLE letras AS 
+SELECT c2, concat_ws(':',collect_list(cast(c1 as STRING))) AS numeros 
+FROM tbl0 GROUP BY c2;
 
 INSERT OVERWRITE DIRECTORY 'output'
 ROW FORMAT DELIMITED 
