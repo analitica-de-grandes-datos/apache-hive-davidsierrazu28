@@ -47,3 +47,14 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
+DROP TABLE IF EXISTS num;
+CREATE TABLE num AS 
+SELECT c2, numeros
+FROM tbl0
+LATERAL VIEW explode (map_values(c6)) lista_num as numeros;
+
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ','
+SELECT c2, SUM(numeros) FROM num GROUP BY c2 ORDER BY c2 ASC;
+
