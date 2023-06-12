@@ -49,7 +49,7 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
 DROP TABLE IF EXIST letras;
 CREATE TABLE letras AS SELECT c2, 
 concat_ws(':',collect_list(cast(c1 as string))) AS nume
-FROM tbl0 GROUP BY c2;
+FROM tbl0 GROUP BY c2 ORDER BY c2;
 
 INSERT OVERWRITE DIRECTORY 'output'
 ROW FORMAT DELIMITED 

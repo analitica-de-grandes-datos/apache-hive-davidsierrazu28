@@ -30,18 +30,10 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
-
-
-
-CREATE TABLE claves AS 
-SELECT clave
-FROM t0
-LATERAL VIEW explode (c3) conjunto_letras as clave;
-
 INSERT OVERWRITE DIRECTORY 'output'
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ','
-SELECT clave, COUNT(1) cantidad FROM claves GROUP BY clave ORDER BY clave;
+SELECT clave, COUNT(valor) FROM t0 LATERAL VIEW explode (c3) t0 as clave, valor GROUP BY clave ORDER BY clave;
 
 
 
