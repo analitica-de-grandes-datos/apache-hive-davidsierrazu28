@@ -33,12 +33,6 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
-CREATE TABLE datos as
-SELECT letras, clave, valor
-FROM (SELECT letras, c3 FROM t0 LATERAL VIEW explode (c2) conj_letras as letras) data1 
-LATERAL VIEW explode (c3) data1;
-
-
 INSERT OVERWRITE LOCAL DIRECTORY 'output'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 
