@@ -42,7 +42,7 @@ LATERAL VIEW explode (c3) data1;
 INSERT OVERWRITE LOCAL DIRECTORY 'output'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 
-SELECT letra, letras, COUNT(letras) FROM t0 
+SELECT letra, letras, COUNT(1) FROM t0 
 LATERAL VIEW explode (c3) t0 as letras, num
 LATERAL VIEW explode (c2) t0 as letra
 GROUP BY letra, letras;
